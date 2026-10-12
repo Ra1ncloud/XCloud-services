@@ -1,0 +1,11 @@
+﻿ZapretCloud is a censorship-bypass tool based on zapret (winws / winws2).
+
+Before installing, please note:
+
+• The program requires administrator rights: it loads the WinDivert network driver used for the bypass.
+
+• Antivirus software (including Windows Defender) sometimes flags WinDivert and winws as dangerous. This is a false positive: the driver intercepts network packets, which looks "suspicious". If your antivirus removes files from the program folder, add the install folder to exclusions and reinstall.
+
+• Do not run other zapret builds (batch files, Zapret GUI, GoodbyeDPI, etc.) at the same time — they compete for the same driver.
+
+• Your settings, presets and custom sites are stored in %AppData%\ZapretCloud and are kept on update or reinstall.

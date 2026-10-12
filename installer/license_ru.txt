@@ -1,0 +1,23 @@
+﻿ZapretCloud
+Программа распространяется «как есть», без каких-либо гарантий. Автор не несёт ответственности за последствия её использования. Используя программу, вы соглашаетесь соблюдать законы своей страны.
+
+Сторонние компоненты, входящие в состав программы:
+
+1. zapret (winws, winws2, lua-скрипты, списки) — © bol-van, лицензия MIT.
+   https://github.com/bol-van/zapret , https://github.com/bol-van/zapret2
+
+2. WinDivert (WinDivert.dll, драйвер Monkey64.sys) — © basil00, лицензия LGPL v3.
+   https://github.com/basil00/WinDivert
+
+3. Cygwin (cygwin1.dll) — © Cygwin authors, лицензия LGPL v3.
+   https://cygwin.com
+
+4. Qt 6 / PyQt6 — © The Qt Company / Riverbank Computing, лицензии LGPL v3 / GPL v3.
+   https://www.qt.io , https://riverbankcomputing.com
+
+5. Python — © Python Software Foundation, лицензия PSF.
+   https://www.python.org
+
+6. Пресеты и каталоги стратегий — из сборок Flowseal zapret-discord-youtube и Zapret GUI (сообщество).
+
+Полные тексты лицензий доступны по ссылкам выше.

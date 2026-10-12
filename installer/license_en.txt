@@ -1,0 +1,23 @@
+﻿ZapretCloud
+This software is provided "as is", without warranty of any kind. The author is not liable for any consequences of its use. By using the software you agree to comply with the laws of your country.
+
+Third-party components included:
+
+1. zapret (winws, winws2, lua scripts, lists) — (c) bol-van, MIT license.
+   https://github.com/bol-van/zapret , https://github.com/bol-van/zapret2
+
+2. WinDivert (WinDivert.dll, Monkey64.sys driver) — (c) basil00, LGPL v3.
+   https://github.com/basil00/WinDivert
+
+3. Cygwin (cygwin1.dll) — (c) Cygwin authors, LGPL v3.
+   https://cygwin.com
+
+4. Qt 6 / PyQt6 — (c) The Qt Company / Riverbank Computing, LGPL v3 / GPL v3.
+   https://www.qt.io , https://riverbankcomputing.com
+
+5. Python — (c) Python Software Foundation, PSF license.
+   https://www.python.org
+
+6. Presets and strategy catalogs — from the Flowseal zapret-discord-youtube and Zapret GUI community builds.
+
+Full license texts are available at the links above.
