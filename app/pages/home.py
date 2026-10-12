@@ -43,6 +43,7 @@ class PresetFilter(QSortFilterProxyModel):
         super().__init__()
         self.core = core
         self.text, self.engine, self.kind, self.fav = "", "all", "all", False
+        self.min_score = 0      # показывать только пресеты с результатом автоподбора не ниже, %
 
     def set(self, **kw):
         for k, v in kw.items():
@@ -59,10 +60,23 @@ class PresetFilter(QSortFilterProxyModel):
             return False
         if self.text and self.text.lower() not in (p.name + " " + p.description).lower():
             return False
+        if self.min_score and self._score(p) < self.min_score:
+            return False
         return True
+
+    def _score(self, p) -> int:
+        r = self.core.results.get(self.core.isp_key, p.id)
+        if not r or r.get("error"):
+            return -1
+        return int(r.get("score", 0))
 
     def lessThan(self, a, b):
         pa, pb = self.sourceModel().items[a.row()], self.sourceModel().items[b.row()]
+        if self.min_score:
+            # в режиме «по результату» — сначала лучшие
+            sa, sb = self._score(pa), self._score(pb)
+            if sa != sb:
+                return sa > sb
         ka = (not self.core.is_fav(pa), pa.builtin, pa.engine != "winws2", pa.name.lower())
         kb = (not self.core.is_fav(pb), pb.builtin, pb.engine != "winws2", pb.name.lower())
         return ka < kb
@@ -197,10 +211,17 @@ class HomePage(QWidget):
         self.kind = QComboBox()
         for k, v in (("all", tr("Все")), ("builtin", tr("Встроенные")), ("user", tr("Мои"))):
             self.kind.addItem(v, k)
+        self.minsc = QComboBox()
+        for k, v in ((0, tr("Любой результат")), (50, tr("от 50%")), (75, tr("от 75%")), (90, tr("от 90%")),
+                     (100, "100%")):
+            self.minsc.addItem(v, k)
+        self.minsc.setToolTip(tr("Показывать только пресеты, которые при автоподборе у вашего провайдера "
+                                 "открыли не меньше указанной доли сайтов"))
         self.fav = QCheckBox(tr("Только избранные"))
         bar.addWidget(self.search, 1)
         bar.addWidget(self.engine)
         bar.addWidget(self.kind)
+        bar.addWidget(self.minsc)
         bar.addWidget(self.fav)
         left.lay.addLayout(bar)
 
@@ -260,10 +281,13 @@ class HomePage(QWidget):
         self.engine.currentIndexChanged.connect(lambda: self._filter(engine=self.engine.currentData()))
         self.kind.currentIndexChanged.connect(lambda: self._filter(kind=self.kind.currentData()))
         self.fav.toggled.connect(lambda v: self._filter(fav=v))
+        self.minsc.setCurrentIndex(max(0, self.minsc.findData(int(settings.get("home_min_score") or 0))))
+        self.proxy.min_score = int(self.minsc.currentData() or 0)
+        self.minsc.currentIndexChanged.connect(self._set_min_score)
 
         core.presets_changed.connect(self.reload)
         core.state_changed.connect(self.update_state)
-        core.results_changed.connect(lambda: (self.view.viewport().update(), self.show_details()))
+        core.results_changed.connect(lambda: (self._filter(), self.view.viewport().update(), self.show_details()))
         self._tick = QTimer(self)
         self._tick.timeout.connect(self.update_state)
         self._tick.start(1000)
@@ -271,10 +295,19 @@ class HomePage(QWidget):
         self.update_state()
 
     # ---------------------------------------------------------------
+    def _set_min_score(self):
+        v = int(self.minsc.currentData() or 0)
+        settings.set("home_min_score", v)
+        self._filter(min_score=v)
+
     def _filter(self, **kw):
         self.proxy.set(**kw)
         self.proxy.sort(0)
-        self.count.setText(f"{self.proxy.rowCount()} {tr('пресетов')}")
+        n = self.proxy.rowCount()
+        txt = f"{n} {tr('пресетов')}"
+        if self.proxy.min_score and n == 0:
+            txt += " · " + tr("нет пресетов с таким результатом — запустите автоподбор или выберите меньший процент")
+        self.count.setText(txt)
 
     def reload(self):
         cur = self.cur()

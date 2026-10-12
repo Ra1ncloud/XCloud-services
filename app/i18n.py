@@ -237,6 +237,11 @@ EN.update({
         "The new version failed to start with the preset — rolled back",
     "Доступно обновление движка": "Engine update available",
     "Доступна новая версия ZapretCloud": "A new ZapretCloud version is available",
+    "Любой результат": "Any result", "от 50%": "50%+", "от 75%": "75%+", "от 90%": "90%+",
+    "Показывать только пресеты, которые при автоподборе у вашего провайдера открыли не меньше указанной доли сайтов":
+        "Show only presets that opened at least this share of sites during auto-tune with your ISP",
+    "нет пресетов с таким результатом — запустите автоподбор или выберите меньший процент":
+        "no presets with this result — run auto-tune or choose a lower percentage",
     "Устанавливаю новую версию…": "Installing the new version…",
     "Не удалось скачать обновление": "Failed to download the update",
     "Не удалось запустить установщик": "Failed to start the installer", "Позже": "Later", "Обновить": "Update",

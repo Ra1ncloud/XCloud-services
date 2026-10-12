@@ -1,6 +1,6 @@
 ﻿; ZapretCloud — скрипт установщика Inno Setup 6
 #define AppName "ZapretCloud"
-#define AppVersion "2.2.13"
+#define AppVersion "2.2.14"
 #define AppExe "ZapretCloud.exe"
 
 [Setup]

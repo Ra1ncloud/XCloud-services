@@ -33,7 +33,7 @@ class TuneWorker(QThread):
             if self.cancel:
                 completed = False
                 break
-            self.progress.emit(i, len(self.presets), p.name)
+            self.progress.emit(i, len(self.presets), f"{p.name} · {ENGINE_LABEL.get(p.engine, p.engine)}")
             ok, msg = runner.start(p, wait=1.2)
             if not ok:
                 self.result.emit(p, {"ok": 0, "total": 0, "score": 0, "cats": {}, "error": msg[:200], "ms": 0})
@@ -109,6 +109,7 @@ class AutotunePage(QWidget):
         self.scope.setMinimumWidth(200)
         self.scope.setCurrentIndex(max(0, self.scope.findData(settings.get("autotune_scope"))))
         self.scope.currentIndexChanged.connect(self.save_opts)
+        self.scope.currentIndexChanged.connect(lambda: self.fill_table())
         self.timeout = QDoubleSpinBox()
         self.timeout.setRange(2, 15)
         self.timeout.setDecimals(1)
@@ -330,9 +331,12 @@ class AutotunePage(QWidget):
         self.table.setSortingEnabled(False)
         self.table.setRowCount(0)
         t = T()
+        # таблица показывает только выбранный набор (иначе видны старые результаты другого движка
+        # и кажется, что подбор шёл по всем пресетам)
+        scope_ids = {p.id for p in self.scope_presets()}
         for pid, s in rows.items():
             p = self.core.by_id(pid)
-            if not p:
+            if not p or pid not in scope_ids:
                 continue
             r = self.table.rowCount()
             self.table.insertRow(r)

@@ -40,7 +40,7 @@ if not defined ISCC (
 
 echo.
 echo Готово!
-echo   Установщик: installer\Output\ZapretCloud_Setup_2.2.13.exe
+echo   Установщик: installer\Output\ZapretCloud_Setup_2.2.14.exe
 echo   Программа:  dist\ZapretCloud\ZapretCloud.exe
 explorer installer\Output
 pause

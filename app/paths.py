@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 APP_NAME = "ZapretCloud"
-APP_VERSION = "2.2.13"
+APP_VERSION = "2.2.14"
 UPDATE_REPO = "Ra1ncloud/XCloud-services"   # GitHub-репозиторий с релизами программы (должен быть публичным)
 APP_ID = "ZapretCloud"
 
